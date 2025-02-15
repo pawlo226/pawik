@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Uploader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #333;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #e9ecef;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dodaj plik audio</h1>
+        <input type="file" id="audioInput" accept="audio/*">
+        <button onclick="uploadAudio()">Prześlij</button>
+        
+        <h2>Dostępne pliki</h2>
+        <ul id="audioList"></ul>
+    </div>
+    
+    <script>
+        function uploadAudio() {
+            const input = document.getElementById('audioInput');
+            const file = input.files[0];
+            if (!file) return;
+            
+            const url = URL.createObjectURL(file);
+            const listItem = document.createElement('li');
+            const audio = document.createElement('audio');
+            audio.controls = true;
+            audio.src = url;
+            
+            listItem.appendChild(audio);
+            document.getElementById('audioList').appendChild(listItem);
+        }
+    </script>
+</body>
+</html>
