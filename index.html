@@ -1,73 +1,18 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wspólne słuchanie muzyki</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wspólne Odsłuchiwanie Muzyki</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Wspólne słuchanie muzyki</h1>
-  <audio id="audio" controls>
-    <source src="your-audio-file.mp3" type="audio/mp3">
-    Twoja przeglądarka nie obsługuje elementu audio.
-  </audio>
-  <br>
-  <button id="playPauseButton">Play/Pause</button>
-  <br>
-  <h2>Uczestnicy</h2>
-  <ul id="participantsList"></ul>
+    <h1>Wspólne Odsłuchiwanie Muzyki</h1>
+    <audio id="audioPlayer" controls>
+        <source src="sciezka_do_twojego_pliku.mp3" type="audio/mp3">
+        Twoja przeglądarka nie wspiera odtwarzania audio.
+    </audio>
 
-  <script>
-    const audio = document.getElementById('audio');
-    const playPauseButton = document.getElementById('playPauseButton');
-    const participantsList = document.getElementById('participantsList');
-
-    // Połączenie z WebSocketem
-    const socket = new WebSocket('ws://localhost:8080'); // Ustaw tutaj adres swojego serwera WebSocket
-
-    // Funkcja do aktualizacji stanu odtwarzania
-    function updateAudioState() {
-      const state = {
-        isPlaying: !audio.paused,
-        currentTime: audio.currentTime,
-        duration: audio.duration
-      };
-      socket.send(JSON.stringify(state)); // Wysyłanie stanu do serwera
-    }
-
-    // Odtwarzanie/Pauzowanie
-    playPauseButton.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.play();
-      } else {
-        audio.pause();
-      }
-      updateAudioState();
-    });
-
-    // Odbieranie wiadomości od serwera (synchronizacja stanu)
-    socket.onmessage = function(event) {
-      const state = JSON.parse(event.data);
-      if (state.isPlaying) {
-        audio.play();
-      } else {
-        audio.pause();
-      }
-      audio.currentTime = state.currentTime;
-    };
-
-    // Aktualizacja listy uczestników
-    socket.onmessage = function(event) {
-      const message = JSON.parse(event.data);
-      if (message.type === 'participantList') {
-        participantsList.innerHTML = '';
-        message.participants.forEach(participant => {
-          const li = document.createElement('li');
-          li.textContent = participant;
-          participantsList.appendChild(li);
-        });
-      }
-    };
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
